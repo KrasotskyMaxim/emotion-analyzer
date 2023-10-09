@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{%block style %}
+<style>
+  .upload-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .upload-container input[type="file"] {
+    flex: 1;
+    margin-right: 10px;
+  }
+</style>
+{% endblock style %}
+{% block script %}
+<script>
+  function uploadPhoto() {
+    const fileInput = document.getElementById('photoInput');
+    const file = fileInput.files[0];
+  
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    fetch('http://127.0.0.1:8000/process/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      const responseDiv = document.getElementById('response');
+      responseDiv.textContent = JSON.stringify(data);
+    })
+    .catch(error => console.error(error));
+  }
+</script>
+{% endblock script %}
+
+{% block content %}
+<div class="upload-container">
+  <input type="file" id="photoInput">
+  <button onclick="uploadPhoto()">Отправить фото</button>
+</div>
+<div id="response"></div>
+
+{% endblock content %}

@@ -1,0 +1,9 @@
+# folders
+.venv/
+.vscode/
+__pycache__/
+weights/
+
+# files
+.env
+*.pyc
