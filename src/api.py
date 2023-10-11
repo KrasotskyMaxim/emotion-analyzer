@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, Request
+from typing import List
 from fastapi.templating import Jinja2Templates
 
 from src import settings
@@ -15,10 +16,17 @@ async def home(request: Request):
     return templates.TemplateResponse('home.html', {"request": request})
 
 
+@app.get("/test/")
+async def home(request: Request):
+    return {"status": "ok"} 
+
+
+
 @app.post("/process/")
-async def process_image(file: UploadFile):
-    content = await file.read()
-    emotions = api_model.registrate_emotions(content)
-    
-    # return {file.filename: emotions}
-    return {"filemane": file.filename, "result": emotions}
+async def process_image(files: List[UploadFile]):
+    response = {}
+    for file in files:
+        content = await file.read()
+        emotions = api_model.registrate_emotions(content)
+        response[file.filename] = emotions
+    return response
