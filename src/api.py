@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from src import settings
 from src.models import ApiModel
 
+import json
 
 app = FastAPI()
 templates = Jinja2Templates(directory=settings.TEMPLATE_PATH)
@@ -24,6 +25,9 @@ async def home(request: Request):
 
 @app.post("/process/")
 async def process_image(files: List[UploadFile]):
+    if not files:
+        return []
+    
     response = {}
     for file in files:
         content = await file.read()
