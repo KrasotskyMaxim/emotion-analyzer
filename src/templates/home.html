@@ -251,7 +251,10 @@
     .then(response => response.json())
     .then(data => {
       const responseDiv = document.getElementById("modelResponse");
-      responseDiv.textContent = JSON.stringify(data);
+      const imgElement = document.createElement("img");
+      imgElement.setAttribute("src", "static/counts.png");
+
+      responseDiv.appendChild(imgElement);
     })
     .catch(error => {
       serverMessage.innerHTML = error;
